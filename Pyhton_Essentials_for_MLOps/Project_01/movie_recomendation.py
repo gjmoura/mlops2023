@@ -1,7 +1,10 @@
+import os
 import logging
 import re as regex
+import zipfile
 import pandas as pd
-import os
+from tqdm import tqdm
+import requests
 import ipywidgets as widgets
 from IPython.display import display
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -20,7 +23,6 @@ def download_data() -> None:
     """
     url = "http://files.grouplens.org/datasets/movielens/ml-25m.zip"
     zip_filename = "ml-25m.zip"
-    extracted_folder_name = "ml-25m"
 
     try:
         logging.info("Iniciando Download...")
@@ -68,6 +70,7 @@ def load_dataset(filepath: str) -> pd.DataFrame:
         logging.error('File not found: %s', error)
         return pd.DataFrame()
 
+download_data()
 
 movies_dataset_list = load_dataset(MOVIES_CSV)
 ratings_list_of_movies = load_dataset(RATINGS_CSV)
