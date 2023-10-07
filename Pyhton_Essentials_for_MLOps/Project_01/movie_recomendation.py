@@ -1,6 +1,7 @@
 import logging
 import re as regex
 import pandas as pd
+import os
 import ipywidgets as widgets
 from IPython.display import display
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -8,10 +9,47 @@ from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 
 # Constantes
-MOVIES_CSV = "./datasets/movies.csv"
-RATINGS_CSV = "./datasets/ratings.csv"
+MOVIES_CSV = "./ml-25m/movies.csv"
+RATINGS_CSV = "./ml-25m/ratings.csv"
 
 # Funções
+
+def download_data() -> None:
+    """
+    Faz o download dos datasets.
+    """
+    url = "http://files.grouplens.org/datasets/movielens/ml-25m.zip"
+    zip_filename = "ml-25m.zip"
+    extracted_folder_name = "ml-25m"
+
+    try:
+        logging.info("Iniciando Download...")
+
+        with requests.Session() as session:
+            response = session.get(url, stream=True)
+            total_size = int(response.headers.get('content-length', 0))
+
+            chunk_size = 128 * 1024
+            total_chunks = total_size // chunk_size
+
+            with open(zip_filename, 'wb') as file:
+                for data in tqdm(response.iter_content(chunk_size=chunk_size),
+                                total=total_chunks,
+                                unit='KB',
+                                unit_scale=True):
+                    file.write(data)
+            
+
+        with zipfile.ZipFile(zip_filename, 'r') as zip_ref:
+            zip_ref.extractall(".")
+
+        logging.info("Download Finalizado! :)")
+        
+
+    except requests.ConnectionError:
+        logging.error("Connection error. :(")
+    except requests.Timeout:
+        logging.error("Timed-out. Try again later. :(")
 
 
 def load_dataset(filepath: str) -> pd.DataFrame:
