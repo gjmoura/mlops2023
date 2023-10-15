@@ -1,93 +1,93 @@
 import pandas as pd
 import numpy as np
+import logging
 import matplotlib.pyplot as plt
 from datetime import datetime
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error
 from matplotlib import style
 
-# Read the datafile, parse dates on "Date"
-data = pd.read_csv("sphist.csv", parse_dates=["Date"])
 
-# Sort by "Date" column
-data.sort_values("Date", ignore_index=True, inplace=True)
+def predict_stock_marker() -> None:
+    """
+        Predict stock marker
+    """
+    df_sphist = pd.read_csv("sphist.csv", parse_dates=["Date"])
 
-# Display basic info
-display(data.info())
-display(data.head())
+    def prepare_data_frame() -> None:
+        """
+        Prepare dataframe for training
+        """
 
-data["prev5_avg"] = 0
-data["prev5_std"] = 0
-data["prev30_avg"] = 0
-data["prev30_std"] = 0
-data["prev365_avg"] = 0
-data["prev365_std"] = 0
+        logging.info("Preparing DataFrame...")
 
-# Iterate over each row to compute the columns using previous 5, 30 and 365 rows (days)
-for index, row in data.iterrows():
-    # Subset the previous 5 rows, compute the average and standard deviation of "Close" column, and set the columns' values
-    past5 = data.iloc[index-5:index]
-    past5_avg = past5["Close"].mean()
-    past5_std = past5["Close"].std()
-    data.loc[index, "prev5_avg"] = past5_avg
-    data.loc[index, "prev5_std"] = past5_std
-    # Subset the previous 30 rows, compute the average and standard deviation of "Close" column, and set the columns' values
-    past30 = data.iloc[index-30:index]
-    past30_avg = past30["Close"].mean()
-    past30_std = past30["Close"].std()
-    data.loc[index, "prev30_avg"] = past30_avg
-    data.loc[index, "prev30_std"] = past30_std
-    # Subset the previous 365 rows, compute the average and standard deviation of "Close" column, and set the columns' values
-    past365 = data.iloc[index-365:index]
-    past365_avg = past365["Close"].mean()
-    past365_std = past365["Close"].std()
-    data.loc[index, "prev365_avg"] = past365_avg
-    data.loc[index, "prev365_std"] = past365_std
-    
-# Display info
-display(data.head(10))
+        df_sphist.sort_values("Date", ignore_index=True, inplace=True)
 
-# Slice the dataframe starting on row 366 (iloc position 365) so every row has values in our newly created columns
-sliced_data = data.iloc[365:]
+        df_sphist["prev5_avg"] = 0
+        df_sphist["prev5_std"] = 0
+        df_sphist["prev30_avg"] = 0
+        df_sphist["prev30_std"] = 0
+        df_sphist["prev365_avg"] = 0
+        df_sphist["prev365_std"] = 0
 
-# Divide the sliced dataframe into Train and Test dataframes
-train = sliced_data[sliced_data["Date"] < datetime(year=2013, month=1, day=1)]
-test = sliced_data[sliced_data["Date"] >= datetime(year=2013, month=1, day=1)]
+        for index in df_sphist.iterrows():
+            past5 = df_sphist.iloc[index-5:index]
+            past5_avg = past5["Close"].mean()
+            past5_std = past5["Close"].std()
+            df_sphist.loc[index, "prev5_avg"] = past5_avg
+            df_sphist.loc[index, "prev5_std"] = past5_std
 
-# Display head of Train and Test dataframes
-display(train.head())
-display(test.head())
+            past30 = df_sphist.iloc[index-30:index]
+            past30_avg = past30["Close"].mean()
+            past30_std = past30["Close"].std()
+            df_sphist.loc[index, "prev30_avg"] = past30_avg
+            df_sphist.loc[index, "prev30_std"] = past30_std
 
-# Linear Regression model with only one possible predictor
-lr = LinearRegression()
-lr.fit(train[["prev5_avg"]], train["Close"])
-predictions = lr.predict(test[["prev5_avg"]])
-rmse = mean_squared_error(predictions, test["Close"]) ** 1/2
+            past365 = df_sphist.iloc[index-365:index]
+            past365_avg = past365["Close"].mean()
+            past365_std = past365["Close"].std()
+            df_sphist.loc[index, "prev365_avg"] = past365_avg
+            df_sphist.loc[index, "prev365_std"] = past365_std
 
-# Plot the model vs actual values
-style.use("fivethirtyeight")
-plt.figure(figsize=(15,10))
-plt.plot(test["Date"], test["Close"])
-plt.plot(test["Date"], predictions)
-plt.legend(["Actual", "Predicted"])
-plt.show()
+    prepare_data_frame()
 
-# Display RMSE value
-print("RMSE value:", round(rmse,1))
+    def plot_graph(test: pd.DataFrame, predictions: np.ndarray) -> None:
+        """
+        Plot the model vs actual values
 
-# Linear Regression model with the 6 possible predictors
-lr = LinearRegression()
-lr.fit(train[["prev5_avg", "prev5_std", "prev30_avg", "prev30_std", "prev365_avg", "prev365_std"]], train["Close"])
-predictions = lr.predict(test[["prev5_avg", "prev5_std", "prev30_avg", "prev30_std", "prev365_avg", "prev365_std"]])
-rmse = mean_squared_error(predictions, test["Close"]) ** 1/2
+        test: DataFrame with the data tests
+        predictions: List with de predictions
+        """
+        style.use("fivethirtyeight")
+        plt.figure(figsize=(15, 10))
+        plt.plot(test["Date"], test["Close"])
+        plt.plot(test["Date"], predictions)
+        plt.legend(["Actual", "Predicted"])
+        plt.show()
 
-# Plot the model vs actual values
-style.use("fivethirtyeight")
-plt.figure(figsize=(15,10))
-plt.plot(test["Date"], test["Close"])
-plt.plot(test["Date"], predictions)
-plt.legend(["Actual", "Predicted"])
-plt.show()
+    def linear_regression_training() -> None:
+        """
+            Linear Regression model with the 6 possible predictors
+        """
+        sliced_df_sphist = df_sphist.iloc[365:]
 
-# Display RMSE value
-print("RMSE value:", round(rmse,1))
+        train_df = sliced_df_sphist[sliced_df_sphist["Date"]
+                                    < datetime(year=2013, month=1, day=1)]
+        test_df = sliced_df_sphist[sliced_df_sphist["Date"]
+                                   >= datetime(year=2013, month=1, day=1)]
+
+        linear_regression = LinearRegression()
+        linear_regression.fit(train_df[["prev5_avg", "prev5_std", "prev30_avg",
+                              "prev30_std", "prev365_avg", "prev365_std"]], train_df["Close"])
+        predictions_list = linear_regression.predict(
+            test_df[["prev5_avg", "prev5_std", "prev30_avg", "prev30_std", "prev365_avg", "prev365_std"]])
+        rmse = mean_squared_error(predictions_list, test_df["Close"]) ** 1/2
+
+        plot_graph(test_df, predictions_list)
+
+        print("RMSE value:", round(rmse, 1))
+
+    linear_regression_training()
+
+
+predict_stock_marker()
