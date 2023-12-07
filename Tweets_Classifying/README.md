@@ -93,12 +93,15 @@ Na página inicial, em que há uma lista com as DAGs, procure pela opção "twee
 
 A partir da execução do código foi possível obter dentro do Weights & Biases os histogramas e gráficos que foram passados a partir do Logging. As imagens a seguir mostram, repectivamente, os valores para a quantidade de tweets que estão relacionados a tweets não reais e reais.
 
-!Target_Value[images/Target.png]
+![Target_Value](images/Target.png)
 
 A imagem seguinte mostra os valores para cada target descrito, mas dessa vez eles estão normalizados. 
 
+![Normalized_Target_Value](images/Normalized_Target.png)
+
 Já o histograma abaixo realça de forma visual as diferenças entre os targets. 
 
+![histogram](images/histogram_values.png)
 
 
 ## ℹ Mais informações
