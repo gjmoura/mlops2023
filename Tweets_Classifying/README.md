@@ -103,6 +103,9 @@ Já o histograma abaixo realça de forma visual as diferenças entre os targets.
 
 ![histogram](images/histogram_values.png)
 
+Por fim, tem-se a o pipleline da execução das tarefas no AirFlow
+
+![histogram](images/Airflow.png)
 
 ## ℹ Mais informações
 
