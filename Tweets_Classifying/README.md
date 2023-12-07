@@ -88,8 +88,7 @@ airflow standalone
 
 Na página inicial, em que há uma lista com as DAGs, procure pela opção "tweets_classifying" e despause essa DAG clicando no toggle ao lado de seu título. Em seguida, clique no título e você obterá mais informações sobre ela, como grafos e logs sobre cada task da pipeline. Para executar a pipeline, basta clicar no ícone de "play" na parte superior direita.
 
-# 📹 Vídeo explicativo
-- [Vídeo Loom](https://www.loom.com/share/50f64bc841d0491eac4ecbb3275a57eb)
+
 
 ## Resultados
 
@@ -108,6 +107,9 @@ Já o histograma abaixo realça de forma visual as diferenças entre os targets.
 Por fim, tem-se a o pipleline da execução das tarefas no AirFlow.
 
 ![histogram](images/Airflow.png)
+
+# 📹 Vídeo explicativo
+- [Vídeo Loom](https://www.loom.com/share/50f64bc841d0491eac4ecbb3275a57eb)
 
 ## ℹ Mais informações
 
