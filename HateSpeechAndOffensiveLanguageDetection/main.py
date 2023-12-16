@@ -31,7 +31,7 @@ sns.set(style="darkgrid")
 
 # Data Exploration
 
-data = pd.read_csv('./train.csv')
+data = pd.read_csv('./dataSet/train.csv')
 
 print(data.head())
 print(data['class'].value_counts())
