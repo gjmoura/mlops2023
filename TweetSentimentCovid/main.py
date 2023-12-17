@@ -1,18 +1,9 @@
 # Importing necessary libraries
 import numpy as np
 import pandas as pd
-import nltk
 from nltk.corpus import stopwords
-from nltk.stem.porter import PorterStemmer
-from nltk.stem import WordNetLemmatizer
-from nltk.tokenize import word_tokenize, sent_tokenize
-from bs4 import BeautifulSoup
 import re
-from keras.preprocessing import text, sequence
-from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
-from string import punctuation
-import keras
-from keras.models import Sequential
+from sklearn.metrics import classification_report, confusion_matrix
 import tensorflow as tf
 import matplotlib.pyplot as plt
 import seaborn as sns
