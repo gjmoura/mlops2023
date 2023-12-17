@@ -169,8 +169,10 @@ def predict_sentiment(input_text):
     
     output += f"The probability of being neutral is {probability_0}%, of being positive is {probability_1}%, and negative is {probability_2}%."
     return output
+    
 
+description_text = "Submit a short text to simulate a tweet. Your tweet can be classified as:\n- Neutral;\n- Offensive Language;\n- Hate Speech."
 
-demo = gr.Interface(fn=predict_sentiment, inputs="text", outputs="text")
+demo = gr.Interface(fn=predict_sentiment, inputs="text", outputs="text", title='Hate Speech and Offensive Language Detector', description=description_text)
     
 demo.launch(show_api=False)
