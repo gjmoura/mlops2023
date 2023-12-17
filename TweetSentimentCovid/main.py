@@ -1,24 +1,18 @@
 import numpy as np
 import pandas as pd
-import os
 import re
-import string
 import seaborn as sns
 import matplotlib.pyplot as plt
 from nltk.corpus import stopwords
-from wordcloud import WordCloud, STOPWORDS
-from keras.preprocessing import text, sequence
-from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
-from sklearn.model_selection import train_test_split
-from keras.models import Sequential
+from sklearn.metrics import classification_report, confusion_matrix
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 import tensorflow as tf
 from keras.utils import to_categorical
 
 # Reading the dataset
-train_data = pd.read_csv("/home/adson/Documentos/MLOPS/covid/Corona_NLP_train.csv", encoding='latin_1')
-test_data = pd.read_csv("/home/adson/Documentos/MLOPS/covid/Corona_NLP_test.csv", encoding='latin_1')
+train_data = pd.read_csv("./dataSet/Corona_NLP_train.csv", encoding='latin_1')
+test_data = pd.read_csv("./dataSet/Corona_NLP_test.csv", encoding='latin_1')
 
 # Drop duplicates and 'NA' values
 train_data.drop_duplicates(inplace=True)
