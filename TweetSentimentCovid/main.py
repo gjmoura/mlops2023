@@ -1,14 +1,15 @@
+import re
 import numpy as np
 import pandas as pd
-import re
 import seaborn as sns
 import matplotlib.pyplot as plt
 from nltk.corpus import stopwords
 from sklearn.metrics import classification_report, confusion_matrix
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
-import tensorflow as tf
 from keras.utils import to_categorical
+import tensorflow as tf
+import gradio as gr
 
 # Reading the dataset
 train_data = pd.read_csv("./dataSet/Corona_NLP_train.csv", encoding='latin_1')
@@ -133,3 +134,43 @@ sns.heatmap(cm, annot=True)
 
 # Classification Report
 print(classification_report(np.argmax(to_categorical(y_test, 3), 1), pred))
+
+def prediction_probability(predict_proba, n):
+    return round(predict_proba[0][n]*100, 2)
+
+def preprocess_text(text):
+    # Aplicar as mesmas etapas de pré-processamento que foram feitas nos dados de treinamento
+    text = clean(text)
+    text_sequence = tokenizer.texts_to_sequences([text])
+    padded_sequence = pad_sequences(text_sequence, maxlen=max_len, padding='post')
+    return padded_sequence
+
+def predict_sentiment(input_text):
+    preprocessed_text = preprocess_text(input_text)
+    prediction = model.predict(preprocessed_text)
+    prediction_proba = model.predict_proba(preprocessed_text)
+    predicted_class = np.argmax(prediction, axis=1)[0]
+    
+    output = "The input is classified as "
+
+    if predicted_class == 0:
+        output += "'neutral'. "
+    elif predicted_class == 1:
+        output += "'positive'. "
+    else:
+        output += "'negative'. "
+
+    # probability of being neutral
+    probability_0 = prediction_probability(prediction_proba, 0)
+    # probability of being positive
+    probability_1 = prediction_probability(prediction_proba, 1)
+    # probability of being negative
+    probability_2 = prediction_probability(prediction_proba, 2)
+    
+    output += f"The probability of being neutral is {probability_0}%, of being positive is {probability_1}%, and negative is {probability_2}%."
+    return output
+
+
+demo = gr.Interface(fn=predict_sentiment, inputs="text", outputs="text")
+    
+demo.launch(show_api=False)
