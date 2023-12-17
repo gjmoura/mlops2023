@@ -17,15 +17,15 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import RandomForestClassifier
-import xgboost as xgb
-import lightgbm as lgb
+#import xgboost as xgb
+#import lightgbm as lgb
 import seaborn as sns
 import matplotlib.pyplot as plt
 
 # Download necessary NLTK resources
-nltk.download('stopwords')
-nltk.download('vader_lexicon')
-nltk.download('all')
+#nltk.download('stopwords')
+#nltk.download('vader_lexicon')
+#nltk.download('all')
 
 sns.set(style="darkgrid")
 
@@ -44,7 +44,7 @@ fdata = data[['tweet', 'class']]
 # Data Processing
 
 # URL Removal
-fdata["tweet"] = fdata["tweet"].apply(lambda x: re.sub(r'https?://\S+', '', str(x)))
+fdata["tweet"] = fdata["tweet"].apply(lambda x: re.sub(r'https?://\S+', ' ', str(x)))
 
 # Lowercase Removal
 fdata['tweet'] = fdata['tweet'].apply(lambda x: " ".join(x.lower() for x in x.split()))
