@@ -6,10 +6,14 @@ import pandas as pd
 import os
 import re
 import string
+import gradio as gr
+from enum import Enum
+
 import nltk
 from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 from nltk.corpus import stopwords
+
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics import confusion_matrix, classification_report
@@ -17,15 +21,19 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import RandomForestClassifier
-#import xgboost as xgb
-#import lightgbm as lgb
+from sklearn.model_selection import RandomizedSearchCV
+
+import xgboost as xgb
+import lightgbm as lgb
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+HATE_SPEECH = ['Neutral', 'Offensive Language', 'Hate Speech']
+
 # Download necessary NLTK resources
-#nltk.download('stopwords')
-#nltk.download('vader_lexicon')
-#nltk.download('all')
+nltk.download('stopwords')
+nltk.download('vader_lexicon')
+nltk.download('all')
 
 sns.set(style="darkgrid")
 
@@ -140,7 +148,6 @@ X_train = vectoriser.transform((X_train).values.astype('U'))
 X_test  = vectoriser.transform((X_test).values.astype('U'))
 
 # Model Evaluation
-
 def model_evaluate(model, X_test):
     y_pred = model.predict(X_test)
     print(classification_report(y_test, y_pred))
@@ -158,22 +165,100 @@ def model_evaluate(model, X_test):
     plt.xlabel('Predicted Values')
     plt.show()
 
-# Logistic Regression Model
-lr_model = LogisticRegression(C=1, max_iter=1000, penalty='l2', n_jobs=-1)
-lr_model.fit(X_train, y_train)
+# # Logistic Regression Model
+# lr_model = LogisticRegression(C=1, max_iter=1000, penalty='l2', n_jobs=-1)
+# lr_model.fit(X_train, y_train)
 
-model_evaluate(lr_model, X_test)
+# model_evaluate(lr_model, X_test)
 
-# Decision Tree Model
-dtmodel = DecisionTreeClassifier()
-dtc = dtmodel.fit(X_train, y_train)
-model_evaluate(dtc, X_test)
+# # Decision Tree Model
+# dtmodel = DecisionTreeClassifier()
+# dtc = dtmodel.fit(X_train, y_train)
+# model_evaluate(dtc, X_test)
 
-# K-Neighbors Classifier
-neigh = KNeighborsClassifier(n_neighbors=3)
-neigh.fit(X_train, y_train)
-model_evaluate(neigh, X_test)
+# # K-Neighbors Classifier
+# neigh = KNeighborsClassifier(n_neighbors=3)
+# neigh.fit(X_train, y_train)
+# model_evaluate(neigh, X_test)
 
-# Random Forest Classifier
-rfc = RandomForestClassifier(n_estimators=10)
-rfc.fit
+# # Random Forest Classifier
+# rfc = RandomForestClassifier(n_estimators=10)
+# rfc.fit(X_train, y_train)
+# model_evaluate(rfc, X_test)
+
+# #XGB Classifier
+# xgb_model=xgb.XGBClassifier(objective="multi:softprob")
+# xgb_model.fit(X_train, y_train)
+# model_evaluate(xgb_model, X_test)
+
+# LGBM Classifier
+modelLGBM = lgb.LGBMClassifier()
+modelLGBM.fit(X_train,y_train)
+model_evaluate(modelLGBM, X_test)
+
+# Hyperparameter Tuning to LGBM Classifier
+model = lgb.LGBMClassifier()
+# Define hyperparameters for tuning
+param_grid = {
+    'n_estimators': [100, 200],
+    'learning_rate': [0.01, 0.05, 0.1],
+    'max_depth': [3, 5, 7]
+}
+# Initialize RandomizedSearchCV
+random_search = RandomizedSearchCV(estimator=model, param_distributions=param_grid,
+                                   n_iter=8, scoring='accuracy', cv=3, random_state=42)
+
+# Fit the model
+random_search.fit(X_train, y_train)
+
+# Print the best parameters and the best score
+print("Best Parameters:", random_search.best_params_)
+print("Best Score:", random_search.best_score_)
+
+# Evaluate the model with best parameters on the test set
+best_model = random_search.best_estimator_
+test_score = best_model.score(X_test, y_test)
+print("Test Score:", test_score)
+
+model_evaluate(best_model,X_test)
+
+def preprocessing_entry(text):
+  # URL Removal
+  clean_text = re.sub(r'https?://\S+', '', text)
+  # Lowercase
+  clean_text = " ".join(word.lower() for word in clean_text.split())
+  # Punctuation removal
+  clean_text = clean_text.replace('[^\w\s]','')
+  # Remove usernames/handles
+  clean_text = re.sub(r'@\w+', '', clean_text)
+  # Emoji Removal
+  clean_text = remove_emoji(clean_text)
+  # Single character and double space removal
+  clean_text = re.sub(r'\s+[a-zA-Z]\s+', ' ', clean_text)
+  clean_text = re.sub(r'\s+', ' ', clean_text, flags=re.I)
+  # Remove words "rt" and colons ":"
+  clean_text = remove_words_and_colons(clean_text)
+  # Remove special and numeric characters
+  clean_text = remove_special_and_numeric(clean_text)
+  # Stopword removal
+  clean_text = remove_stopwords(clean_text)
+
+  return clean_text
+
+
+def predict_entry(text):
+  clean_text = preprocessing_entry(text)
+  text_vetorized = vectoriser.transform([clean_text])
+
+  prev = best_model.predict(text_vetorized)
+  prevProba = best_model.predict_proba(text_vetorized)
+  classes = best_model.classes_
+
+  resp = f"O nível de discurso de ódio para a entrada é {HATE_SPEECH[prev[0]]}. Considerando uma probabilidade de {round(prevProba[0][0]*100, 2)}% para '{HATE_SPEECH[classes[0]]}', {round(prevProba[0][1]*100, 2)}% para '{HATE_SPEECH[classes[1]]}' e {round(prevProba[0][2]*100, 2)}% para '{HATE_SPEECH[classes[2]]}'."
+
+  return resp
+
+
+demo = gr.Interface(fn=predict_entry, inputs="text", outputs="text")
+    
+demo.launch(show_api=False)
