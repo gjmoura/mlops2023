@@ -44,7 +44,7 @@ A execução do código retorna os seguintes valores para precisão nos dados de
 
 Em seguida é disponibilizado um link para execução da aplicação em um URL local. O link leva a tela gerada e configura pela ferramenta Gradio:
 
-![Gradio](images/TelaGradio.png)
+![Gradio](images/Gradio.png)
 
 Ao escrever e submeter na caixa de diálogo "input_text" um texto que simulará um tweet, aparecerá na caixa de diálogo "output" a classificação de sentimento referente ao texto de entrada, informado se ele é Neutro, Positivo ou Negativo. Um exemplo para as três possibilidades descritas pode ser visto a seguir:
 
