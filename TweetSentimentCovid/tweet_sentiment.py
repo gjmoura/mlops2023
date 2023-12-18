@@ -27,6 +27,9 @@ test_df = test_data.copy()
 
 # Applying the change_sen function/method
 def change_sen(sentiment):
+    """
+    Return the sentiment type of the text
+    """
     if sentiment == "Extremely Positive":
         return 'positive'
     elif sentiment == "Extremely Negative":
@@ -36,7 +39,7 @@ def change_sen(sentiment):
     elif sentiment == "Negative":
         return 'negative'
     else:
-        return 'netural'
+        return 'neutral'
 
 train_df['Sentiment'] = train_df['Sentiment'].apply(lambda x: change_sen(x))
 test_df['Sentiment'] = test_df['Sentiment'].apply(lambda x: change_sen(x))
@@ -165,7 +168,8 @@ def predict_sentiment(input_text):
 description_text = "Submit a short text to simulate a tweet. Your tweet can be classified as:\n"\
                     "- <b>Neutral:</b> do not express a positive or negative opinion related to COVID-19\n"\
                     "- <b>Positive:</b> express positive emotions related to COVID-19\n"\
-                    "- <b>Negative:</b> express negative emotions related to COVID-19\n"
+                    "- <b>Negative:</b> express negative emotions related to COVID-19\n"\
+                    "- <b>Unexpected prediction.:</b> express a unknow input to COVID-19\n"
 
 demo = gr.Interface(fn=predict_sentiment, inputs="text", outputs="text", title='Sentiment classifier for tweets related to COVID-19', description=description_text)
     
