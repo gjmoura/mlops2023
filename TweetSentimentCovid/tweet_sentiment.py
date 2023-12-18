@@ -103,7 +103,7 @@ model = tf.keras.Sequential([
 model.compile(loss='categorical_crossentropy', optimizer="adam", metrics=['accuracy'])
 
 # Model training
-num_epochs = 1
+num_epochs = 10
 history = model.fit(x_train, to_categorical(y_train, 3), epochs=num_epochs, validation_data=(x_test, to_categorical(y_test, 3)))
 
 # Model Accuracy and loss
