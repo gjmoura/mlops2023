@@ -65,7 +65,7 @@ df_train = train_df.iloc[:, 4:]
 df_test = test_df.iloc[:, 4:]
 
 # Now mapping the sentiment
-l = {"netural": 0, "positive": 1, "negative": 2}
+l = {"neutral": 0, "positive": 1, "negative": 2}
 df_train['Sentiment'] = df_train['Sentiment'].map(l)
 df_test['Sentiment']  = df_test['Sentiment'].map(l)
 
@@ -134,6 +134,10 @@ pred = model.predict(x_test)
 pred = np.argmax(pred, axis=1)
 cm = confusion_matrix(np.argmax(to_categorical(y_test, 3), 1), pred)
 sns.heatmap(cm, annot=True)
+plt.xlabel('Predicted')
+plt.ylabel('True')
+plt.title('Confusion Matrix')
+plt.show()
 
 # Classification Report
 print(classification_report(np.argmax(to_categorical(y_test, 3), 1), pred))
