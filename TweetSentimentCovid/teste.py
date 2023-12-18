@@ -148,6 +148,8 @@ def predict_sentiment(input_text, model, tokenizer, max_len):
 
     return output
 
+    
+
 def main():
     train_df, test_df = load_data()
     train_df = apply_sentiment_changes(train_df)
@@ -168,8 +170,14 @@ def main():
 
     evaluate_model(model, history, x_test, y_test)
 
-    description_text = "Submit a short text to simulate a tweet. Your tweet can be classified as:\n"\
-                        "- <b>Neutral:</b> do not express"
-
 
 main()
+
+description_text = "Submit a short text to simulate a tweet. Your tweet can be classified as:\n"\
+                    "- <b>Neutral:</b> do not express a positive or negative opinion related to COVID-19\n"\
+                    "- <b>Positive:</b> express positive emotions related to COVID-19\n"\
+                    "- <b>Negative:</b> express negative emotions related to COVID-19\n"
+
+demo = gr.Interface(fn=predict_sentiment, inputs="text", outputs="text", title='Sentiment classifier for tweets related to COVID-19', description=description_text)
+    
+demo.launch(show_api=False)
