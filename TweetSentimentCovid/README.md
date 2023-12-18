@@ -38,24 +38,21 @@ Em seguida é necessário executar o arquivo com o código fonte para treinament
 
 ## Resultados
 
-A partir da execução do código foi possível obter dentro do Weights & Biases os histogramas e gráficos que foram passados a partir do Logging. As imagens a seguir mostram, repectivamente, os valores para a quantidade de tweets que estão relacionados a tweets não reais e reais.
+A execução do código retorna os seguintes valores para precisão nos dados de treino e previsão nos dados de validação, respectivamente:
 
-![Target_Value](images/Target.png)
+![Accuracy](images/Accuracy.png)
 
-A imagem seguinte mostra os valores para cada target descrito, mas dessa vez eles estão normalizados. 
+Em seguida é disponibilizado um link para execução da aplicação em um URL local. O link leva a tela gerada e configura pela ferramenta Gradio:
 
-![Normalized_Target_Value](images/Normalized_Target.png)
+![Gradio](images/TelaGradio.png)
 
-Já o histograma abaixo realça de forma visual as diferenças entre os targets. 
+Ao escrever e submeter na caixa de diálogo "input_text" um texto que simulará um tweet, aparecerá na caixa de diálogo "output" a classificação de sentimento referente ao texto de entrada, informado se ele é Neutro, Positivo ou Negativo. Um exemplo para as três possibilidades descritas pode ser visto a seguir:
 
-![histogram](images/histogram_values.png)
+![TweetNeutro](images/TweetNeutro.png)
 
-Por fim, tem-se a o pipleline da execução das tarefas no AirFlow.
+![TweetPositivo.png](images/TweetPositivo.png)
 
-![histogram](images/Airflow.png)
-
-# 📹 Vídeo explicativo
-- [Vídeo Loom](https://www.loom.com/share/50f64bc841d0491eac4ecbb3275a57eb)
+![TweetNegativo](images/TweetNegativo.png)
 
 ## ℹ Mais informações
 
