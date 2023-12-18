@@ -154,14 +154,19 @@ def predict_sentiment(input_text):
         output += "'neutral'."
     elif predicted_class == 1:
         output += "'positive'."
-    else:
+    elif predicted_class == 2:
         output += "'negative'."
+    else:
+        output = "Unexpected prediction."
     
     return output
     
 
-description_text = "Submit a short text to simulate a tweet. Your tweet can be classified as:\n- Neutral;\n- Offensive Language;\n- Hate Speech."
+description_text = "Submit a short text to simulate a tweet. Your tweet can be classified as:\n"\
+                    "- <b>Neutral:</b> do not express a positive or negative opinion related to COVID-19\n"\
+                    "- <b>Positive:</b> express positive emotions related to COVID-19\n"\
+                    "- <b>Negative:</b> express negative emotions related to COVID-19\n"
 
-demo = gr.Interface(fn=predict_sentiment, inputs="text", outputs="text", title='Hate Speech and Offensive Language Detector', description=description_text)
+demo = gr.Interface(fn=predict_sentiment, inputs="text", outputs="text", title='Sentiment classifier for tweets related to COVID-19', description=description_text)
     
 demo.launch(show_api=False)
