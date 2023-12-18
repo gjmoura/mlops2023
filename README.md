@@ -9,5 +9,9 @@ Projeto da disciplina Projeto de Sistemas Baseados em Aprendizado de Máquina da
 
 ## 📒 Projeto 2 Unidade
 - [**Projeto** - Tweets Classifiyng ](https://github.com/gjmoura/mlops2023/tree/main/Tweets_Classifying)
+
+## 📒 Projeto 3 Unidade
+- [**Projeto** - Tweet Sentiment Covid ](https://github.com/gjmoura/mlops2023/tree/main/TweetSentimentCovid)
+
 ## ℹ Mais informações
 Aluno: Gustavo Jerônimo Moura de França
