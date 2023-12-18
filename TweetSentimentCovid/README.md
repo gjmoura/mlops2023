@@ -38,6 +38,10 @@ Em seguida é necessário executar o arquivo com o código fonte para treinament
 
 ## Resultados
 
+Os dados de training loss não tiveram resultados esperados, se aproximando mais de um underfitting
+
+![Accuracy](images/TrainingLoss.png)
+
 A execução do código retorna os seguintes valores para precisão nos dados de treino e previsão nos dados de validação, respectivamente:
 
 ![Accuracy](images/Accuracy.png)
