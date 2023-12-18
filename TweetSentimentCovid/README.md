@@ -36,6 +36,16 @@ Garantindo a conexão, execute o comando ```dvc pull```, para baixar os data set
 
 Em seguida é necessário executar o arquivo com o código fonte para treinamento do modelo e execução do ```gradio``` para interação visual com o modelo.
 
+## Exploração dos dados
+
+Os dados foram categorizados de forma manual, totalizando em 5 tipos, Neutral, Positive, Negative, Extremely Positive e Extremely Negative.
+
+![Accuracy](images/all_sentiments.png)
+
+Porém, para treinamento do modelo, iremos limitar o uso do data set para em três categorias, Neutral, Positive, Negative e transformar os xtremely Positive em Positive e Extremely Negative em Negative.
+
+![Accuracy](images/filtered_sentiment.png)
+
 ## Resultados
 
 Os dados de training loss não tiveram resultados esperados, se aproximando mais de um underfitting
