@@ -3,10 +3,11 @@ Projeto Final da disciplina Projeto de Sistemas Baseados em Aprendizado de Máqu
 
 ## 📒 Projeto
 # Classifying Disaster-Related Tweets as Real or Fake
-Esse projeto se chama <i>Análise de sentimentos de Tweets sobre a COVID-19/i> e constrói um modelo de classificação de texto de aprendizagem profunda para prever se tweets expressam emoções neutras, positivas ou negativas relacionadas a pandemia do COVID-19. Utilizando como base um [Projeto](https://www.kaggle.com/code/himanshutripathi/covid-19-tweets-analysis-97-accuracy) e um [conjunto de dados](https://www.kaggle.com/datasets/datatattle/covid-19-nlp-text-classification/data) disponíveis na plataforma [Kaggle](https://www.kaggle.com/),o algoritmo passa por etapas que incluem a exploração e visualização dos dados, o pré-processamento textual e o treinamento do modelo com TensorFlow. 
+Esse projeto se chama <i>Análise de sentimentos de Tweets sobre a COVID-19/<i> e constrói um modelo de classificação de texto de aprendizagem profunda para prever se tweets expressam emoções neutras, positivas ou negativas relacionadas a pandemia do COVID-19. Utilizando como base um [Projeto](https://www.kaggle.com/code/himanshutripathi/covid-19-tweets-analysis-97-accuracy) e um [conjunto de dados](https://www.kaggle.com/datasets/datatattle/covid-19-nlp-text-classification/data) disponíveis na plataforma [Kaggle](https://www.kaggle.com/), o algoritmo passa por etapas que incluem a exploração e visualização dos dados, o pré-processamento textual e o treinamento do modelo com TensorFlow. 
 
 ## Dependências
-- wandb
+- dvc
+- Gradio
 - Python 3.8+
 - numpy
 - pandas
